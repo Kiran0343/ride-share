@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
+    measurementId: "YOUR_MEASUREMENT_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+    <script>
+        function sendOTP() {
+            const phoneNumber = document.getElementById("phone").value;
+            const appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    alert('OTP has been sent to your phone.');
+                }).catch((error) => {
+                    console.error("Error sending OTP:", error);
+                    alert("Failed to send OTP. Please try again.");
+                });
+        }
+    </script>
+</head>
+<body>
+    <h2>Register</h2>
+    <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" required><br>
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" required><br>
+        <label>User Type:</label>
+        <input type="radio" name="user_type" value="user" required> User
+        <input type="radio" name="user_type" value="provider" required> Ride Provider<br>
+        <button type="button" onclick="sendOTP()">Register</button>
+    </form>
+</body>
+</html>
