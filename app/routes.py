@@ -37,3 +37,7 @@ def register():
 def login():
     # Implement login functionality
     return render_template('login.html')
+
+@main.route('/forgot-password')
+def forgot_password():
+    return render_template('login.html')
