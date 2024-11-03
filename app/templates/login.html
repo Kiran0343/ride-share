@@ -10,6 +10,19 @@
             const navRight = document.querySelector('.nav-right');
             navRight.classList.toggle('active');
         }
+
+        // Function to hide flash messages after a few seconds
+        function hideFlashMessages() {
+            const flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                setTimeout(() => {
+                    flashMessage.style.display = 'none';
+                }, 5000); // Adjust time in milliseconds (5000 ms = 5 seconds)
+            }
+        }
+
+        // Call the hideFlashMessages function when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', hideFlashMessages);
     </script>
 </head>
 <body style="background-color: #292626;">
@@ -23,6 +36,18 @@
             <a href="/login" class="nav-item">Login</a>
             <a href="/register" class="nav-item">Register</a>
         </div>
+
+        <!-- Flash Message Container -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div id="flash-message" class="flash-messages">
+              {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
     </nav>
 </header>
 

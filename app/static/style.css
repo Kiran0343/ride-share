@@ -236,6 +236,27 @@ input[type="tel"] {
  main {
         padding-left: 3em; /* Increased padding for medium screens */
         padding-right: 3em;
+<<<<<<< HEAD
+    }
+}
+
+
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    main {
+        padding-left: 4em; /* Increased padding for medium screens */
+        padding-right: 4em;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 900px) {
+    main {
+        padding-left: 6em; /* Increased padding for medium screens */
+        padding-right: 6em;
+=======
+>>>>>>> 23c7cf5 (working code)
     }
 }
 
@@ -255,4 +276,24 @@ input[type="tel"] {
         padding-left: 6em; /* Increased padding for medium screens */
         padding-right: 6em;
     }
+}
+
+
+.flash-messages {
+    position: absolute; /* Adjust position as needed */
+    top: 0; /* Position at the top */
+    left: 0;
+    right: 0;
+    background-color: #d4edda; /* Green background for success messages */
+    color: #155724; /* Dark green text */
+    padding: 10px;
+    text-align: center;
+    z-index: 1000; /* Ensure it appears above other content */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center the content */
+}
+
+.flash-messages .danger {
+    background-color: #f8d7da; /* Red background for error messages */
+    color: #721c24; /* Dark red text */
 }

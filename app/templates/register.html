@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Register</title>
     <script>
         function validateForm() {
@@ -51,6 +51,19 @@
             const navRight = document.querySelector('.nav-right');
             navRight.classList.toggle('active');
         }
+
+        // Function to hide flash messages after a few seconds
+        function hideFlashMessages() {
+            const flashMessage = document.getElementById('flash-message');
+            if (flashMessage) {
+                setTimeout(() => {
+                    flashMessage.style.display = 'none';
+                }, 5000); // Adjust time in milliseconds (5000 ms = 5 seconds)
+            }
+        }
+
+        // Call the hideFlashMessages function when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', hideFlashMessages);
     </script>
 </head>
 <body style="background-color: #292626;">
@@ -59,19 +72,30 @@
         <div class="nav-left">
             <a href="/" class="nav-item">Home</a>
         </div>
-        <!-- Hamburger menu icon for mobile -->
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <div class="nav-right">
             <a href="/login" class="nav-item">Login</a>
             <a href="/register" class="nav-item">Register</a>
         </div>
+
+        <!-- Flash Message Container -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div id="flash-message" class="flash-messages">
+              {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
     </nav>
 </header>
 
 <main style="margin-top: 3em;">
     <div class="register-container">
         <h1>Register</h1>
-        <form action="/register" method="POST" onsubmit="return validateForm()">
+        <form action="{{ url_for('main.register') }}" method="POST" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
