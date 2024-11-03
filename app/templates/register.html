@@ -3,60 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="static/style.css">
+    <title>Register</title>
+    <script>
+        function validateForm() {
+            const username = document.getElementById('username').value;
+            const firstName = document.getElementById('first_name').value;
+            const lastName = document.getElementById('last_name').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            // Username cannot contain spaces
+            if (/\s/.test(username)) {
+                alert("Username cannot contain spaces.");
+                return false;
+            }
+
+            // First name and last name must be alphabetic
+            if (!/^[a-zA-Z]+$/.test(firstName) || !/^[a-zA-Z]+$/.test(lastName)) {
+                alert("First Name and Last Name can only contain letters.");
+                return false;
+            }
+
+            // Phone number must be 10 digits
+            if (!/^\d{10}$/.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+
+            // Password validation
+            if (!/(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(password)) {
+                alert("Password must contain at least one uppercase letter, one number, and one special character.");
+                return false;
+            }
+
+            // Confirm password must match
+            if (password !== confirmPassword) {
+                alert("Password and Confirm Password must match.");
+                return false;
+            }
+
+            return true; // Form is valid
+        }
+
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
 </head>
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="/" class="nav-item nav-left">Home</a>
-            <div class="nav-right">
-                <a href="/login" class="nav-item">Login</a>
-                <a href="/register" class="nav-item">Register</a>
-            </div>
-        </nav>
-    </header>
-    <main>
-        <div class="register-container">
-            <h1>Register</h1>
-            <form action="/register" method="POST">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number:</label>
-                    <div class="phone-group">
-                        <select id="country_code" name="country_code" class="country-code" required>
-                            <option value="+1">+1 (US)</option>
-                            <option value="+44">+44 (UK)</option>
-                            <option value="+91">+91 (IN)</option>
-                            <!-- Add more country codes as needed -->
-                        </select>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>User Type:</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="user_type" value="user" required> User</label>
-                        <label><input type="radio" name="user_type" value="ride_provider" required> Ride Provider</label>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn">Register</button>
-                    <button type="reset" class="btn-secondary">Reset</button>
-                </div>
-            </form>
+<body style="background-color: #292626;">
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Home</a>
         </div>
-    </main>
+        <!-- Hamburger menu icon for mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <a href="/login" class="nav-item">Login</a>
+            <a href="/register" class="nav-item">Register</a>
+        </div>
+    </nav>
+</header>
+
+<main style="margin-top: 3em;">
+    <div class="register-container">
+        <h1>Register</h1>
+        <form action="/register" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
+            </div>
+
+            <div class="form-group phone-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <!-- User Type Dropdown -->
+            <div class="form-group user-type-group">
+                <label for="user_type">User Type:</label>
+                <select id="user_type" name="user_type" required>
+                    <option value="user">User</option>
+                    <option value="ride_provider">Ride Provider</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Register</button>
+                <button type="reset" class="btn">Reset</button>
+            </div>
+        </form>
+    </div>
+</main>
 </body>
 </html>

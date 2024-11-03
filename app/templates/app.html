@@ -2,22 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
 </head>
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="/" class="nav-item nav-left">Home</a>
-            <div class="nav-right">
-                <a href="/login" class="nav-item">Login</a>
-                <a href="/register" class="nav-item">Register</a>
-            </div>
-        </nav>
-    </header>
-    <main>
-        <h1>Welcome to Ride Share</h1>
-        <p>Connecting riders with providers in a seamless and secure way.</p>
-    </main>
+<body style="background-color: #292626;">
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <a href="/login" class="nav-item">Login</a>
+            <a href="/register" class="nav-item">Register</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="home-container" style="color: white; font-size: 20px;">
+        <br><br><br><br>
+        <h1 style="color: white; font-size: 26px;">Welcome to Ride Share</h1>
+        <p>Join a community dedicated to connecting riders and providers in a safe, convenient, and accessible way. Whether you're looking to share a ride or provide one, we've got you covered.</p>
+    </div>
+</main>
+
 </body>
 </html>

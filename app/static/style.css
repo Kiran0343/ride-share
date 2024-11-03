@@ -1,54 +1,44 @@
-/* General Reset */
+/* General reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe); /* Gradient background */
-    color: #333;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-header {
-    background-color: #333;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    position: absolute;
-    top: 0;
-}
-
-/* Navigation Bar */
+/* Navbar styles */
 .navbar {
-    max-width: 12000px;
-    margin: 0 auto;
+    background-color: #123;
+    padding: 8px 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
+    color: white;
+    position: relative;
+}
+
+.nav-left, .nav-right {
+    display: flex;
 }
 
 .nav-item {
     color: white;
     text-decoration: none;
-    font-size: 26px;
-    padding: 8px 15px;
+    font-size: 1.8em; /* Increased font size */
+    padding: 8px 12px;
     transition: background 0.3s ease;
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
 }
 
-.nav-left {
-    font-weight: bold;
+.menu-icon {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
 }
+
 
 /* Main Content */
 main {
@@ -76,6 +66,7 @@ h1 {
 
 .form-group {
     margin-bottom: 15px;
+    font-size: 1.4em;
 }
 
 label {
@@ -117,6 +108,8 @@ input[type="password"]:focus {
     margin-top: 20px;
 }
 
+
+
 /* Button Styling */
 .btn {
     background-color: #4facfe; /* Primary button color */
@@ -135,7 +128,7 @@ input[type="password"]:focus {
 }
 
 .btn-secondary {
-    background-color: #4facfe; /* Slightly lighter color for secondary button */
+    background-color: #4facfe; /* Same color as the Register button */
     color: white;
     border: none;
     padding: 10px 15px;
@@ -143,13 +136,12 @@ input[type="password"]:focus {
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s ease;
-    width: 100px; /* Same width as the register button */
+    width: 100px; /* Same width as the Register button */
 }
 
 .btn-secondary:hover {
-    background-color: #3b8cd7; /* Hover color for secondary button */
+    background-color: #3b8cd7; /* Same hover color as the Register button */
 }
-
 
 /* Radio Button Font Size */
 .radio-group label {
@@ -193,32 +185,46 @@ input[type="tel"] {
     background-color: #bbb;
 }
 
+.user-type-group {
+    display: flex;
+    align-items: center;
+}
+
+.user-type-group label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.user-type-group select {
+    width: 100%; /* Same width as other input fields */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.home-container {
+    color: white;
+    font-size: 20px;
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
-    .menu-icon {
-        display: inline;
-    }
-
-    /* Hide the nav items initially */
     .nav-right {
         display: none;
         flex-direction: column;
-        width: 100%;
-        background-color: #333;
+        background-color: #165580;
         position: absolute;
-        top: 50px;
+        top: 100%;
         left: 0;
+        width: 100%;
     }
 
-    /* Show menu when active */
     .nav-right.active {
         display: flex;
     }
 
-    .nav-item {
-        padding: 10px;
-        text-align: center;
-        width: 100%;
-        border-top: 1px solid #444;
+    .menu-icon {
+        display: block;
     }
 }
