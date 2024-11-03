@@ -208,6 +208,8 @@ input[type="tel"] {
     font-size: 20px;
 }
 
+
+
 /* Mobile styles */
 @media (max-width: 768px) {
     .nav-right {
@@ -225,6 +227,32 @@ input[type="tel"] {
     }
 
     .menu-icon {
-        display: block;
+    font-size: 3em; /* Increase the font size for a larger hamburger icon */
+    cursor: pointer; /* Change the cursor to pointer for better user experience */
+    color: white; /* Change color to match your navbar or for better visibility */
+    display: flex; /* Use flex to center align the icon if needed */
+    align-items: center; /* Vertically center the icon */
+}
+ main {
+        padding-left: 3em; /* Increased padding for medium screens */
+        padding-right: 3em;
+    }
+}
+
+
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    main {
+        padding-left: 4em; /* Increased padding for medium screens */
+        padding-right: 4em;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 900px) {
+    main {
+        padding-left: 6em; /* Increased padding for medium screens */
+        padding-right: 6em;
     }
 }

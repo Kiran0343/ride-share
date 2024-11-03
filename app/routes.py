@@ -10,6 +10,10 @@ firebase_admin.initialize_app(cred)
 
 main = Blueprint('main', __name__)
 
+@main.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('app.html'), 404
+
 @main.route('/')
 def home():
     return render_template('app.html')
