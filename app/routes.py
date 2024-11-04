@@ -21,7 +21,11 @@ def page_not_found(e):
 
 @main.route('/')
 def home():
-    return render_template('app.html')
+    if current_user.is_authenticated:
+        # Redirect to the dashboard or another page if already logged in
+        return redirect(url_for('main.dashboard'))  # Adjust 'main.dashboard' as needed
+    else:
+        return render_template('app.html')
 
 
 @main.route('/register', methods=['GET','POST'])
