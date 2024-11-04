@@ -104,6 +104,7 @@ def login():
             return redirect(url_for('main.dashboard'))  # Redirect to a dashboard or home page
         else:
             flash('Invalid username or password.', 'danger')
+            return render_template('login.html')
 
     return render_template('login.html')  # Render the login page again if not POST or on failure
 
