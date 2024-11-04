@@ -7,19 +7,34 @@
 
 /* Navbar styles */
 .navbar {
-    background-color: #123;
-    padding: 8px 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    position: relative;
+    background-color: #165580; /* Keep your background color */
+    position: fixed; /* Fix the navbar to the top */
+    top: 0; /* Align to the top of the viewport */
+    left: 0; /* Align to the left of the viewport */
+    width: 100%; /* Full width of the viewport */
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 10px 20px; /* Add padding for aesthetics */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Center items vertically */
 }
 
 .nav-left, .nav-right {
-    display: flex;
+    display: flex; /* Align items within these sections using flexbox */
+    align-items: center; /* Center items vertically within the flex containers */
 }
 
+.menu-icon {
+    display: none; /* Hide the menu icon on larger screens */
+}
+
+.nav-right {
+    gap: 15px; /* Add space between the items in the right section */
+}
+
+body {
+    padding-top: 60px; /* Add padding to the body to prevent content from being hidden behind the navbar */
+}
 .nav-item {
     color: white;
     text-decoration: none;
@@ -33,11 +48,6 @@
     border-radius: 4px;
 }
 
-.menu-icon {
-    display: none;
-    font-size: 26px;
-    cursor: pointer;
-}
 
 
 /* Main Content */
@@ -103,14 +113,11 @@ input[type="password"]:focus {
 
 .form-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between buttons */
     align-items: center;
     margin-top: 20px;
 }
 
-
-
-/* Button Styling */
 .btn {
     background-color: #4facfe; /* Primary button color */
     color: white;
@@ -120,15 +127,15 @@ input[type="password"]:focus {
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s ease;
-    width: 100px; /* Same width for consistency */
+    width: 45%; /* Set to a percentage for responsiveness */
 }
 
-.btn:hover {
-    background-color: #3b8cd7; /* Hover color for primary button */
+.btn:first-child {
+    margin-right: 5%; /* Add space between buttons */
 }
 
-.btn-secondary {
-    background-color: #4facfe; /* Same color as the Register button */
+.btn1 {
+    background-color: #4facfe; /* Primary button color */
     color: white;
     border: none;
     padding: 10px 15px;
@@ -136,12 +143,14 @@ input[type="password"]:focus {
     cursor: pointer;
     font-size: 16px;
     transition: background 0.3s ease;
-    width: 100px; /* Same width as the Register button */
+    width: 35%; /* Set to a percentage for responsiveness */
 }
 
-.btn-secondary:hover {
-    background-color: #3b8cd7; /* Same hover color as the Register button */
+.btn1:first-child {
+    margin-right: 5%; /* Add space between buttons */
 }
+
+
 
 /* Radio Button Font Size */
 .radio-group label {
@@ -172,18 +181,6 @@ input[type="tel"] {
 }
 
 
-.btn:hover {
-    background-color: #3b8cd7;
-}
-
-.btn-secondary {
-    background-color: #ddd;
-    color: #333;
-}
-
-.btn-secondary:hover {
-    background-color: #bbb;
-}
 
 .user-type-group {
     display: flex;
@@ -214,31 +211,39 @@ input[type="tel"] {
 @media (max-width: 768px) {
     .nav-right {
         display: none;
-        flex-direction: column;
-        background-color: #165580;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
+        flex-direction: column; /* Stack items vertically */
+        background-color: #165580; /* Match navbar background */
+        position: absolute; /* Position the menu below the navbar */
+        top: 100%; /* Position it right below the navbar */
+        left: 0; /* Align to the left */
+        width: 100%; /* Full width */
     }
 
     .nav-right.active {
-        display: flex;
+        display: flex; /* Show when toggled */
+    }
+
+    .nav-item {
+        text-align: left; /* Align menu items to the left */
+        padding: 10px 20px; /* Add some padding for better touch targets */
+        color: white; /* Ensure text is visible */
+        width: 100%; /* Full width for each item */
     }
 
     .menu-icon {
-    font-size: 3em; /* Increase the font size for a larger hamburger icon */
-    cursor: pointer; /* Change the cursor to pointer for better user experience */
-    color: white; /* Change color to match your navbar or for better visibility */
-    display: flex; /* Use flex to center align the icon if needed */
-    align-items: center; /* Vertically center the icon */
-}
- main {
+        font-size: 3em; /* Increase the font size for a larger hamburger icon */
+        cursor: pointer; /* Change the cursor to pointer for better user experience */
+        color: white; /* Change color to match your navbar or for better visibility */
+        display: flex; /* Use flex to center align the icon if needed */
+        align-items: center; /* Vertically center the icon */
+    }
+
+    main {
         padding-left: 3em; /* Increased padding for medium screens */
-        padding-right: 3em;
-<<<<<<< HEAD
+        padding-right: 3em; /* Increased padding for medium screens */
     }
 }
+
 
 
 
