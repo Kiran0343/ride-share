@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
+</head>
+<body style="background-color: #292626;">
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <p class="nav-item">{{ current_user.username }}</p>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main style="margin-top: 6em;">
+    <div class="user-home-container" style="color: white; text-align: center;">
+
+
+        <div class="action-container">
+            <!-- Book Ride Container -->
+            <div class="card" style="background-color: #3B3B3B; padding: 20px; margin: 20px; border-radius: 10px; display: inline-block; width: 45%; vertical-align: top;">
+                <h2 style="color: #D4AF37;">Book a Ride</h2>
+                <p>Plan your journey with our easy-to-use booking system. Select your pickup and drop-off locations to start.</p>
+                <a href="/book-ride" class="btn" style="background-color: #165580; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Book Now</a>
+            </div>
+
+            <!-- Check History Container -->
+            <div class="card" style="background-color: #3B3B3B; padding: 20px; margin: 20px; border-radius: 10px; display: inline-block; width: 45%; vertical-align: top;">
+                <h2 style="color: #D4AF37;">Check Ride History</h2>
+                <p>Review your past rides, including completed trips and upcoming bookings, all in one place.</p>
+                <a href="/history" class="btn" style="background-color: #165580; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View History</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

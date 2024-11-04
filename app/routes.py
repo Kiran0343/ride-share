@@ -6,6 +6,7 @@ from firebase_admin import credentials, auth
 from sqlalchemy import text  # Import the text function for raw SQL queries
 from werkzeug.security import check_password_hash  # Import for password verification
 from passlib.hash import bcrypt
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 # Initialize Firebase Admin SDK
@@ -94,16 +95,28 @@ def login():
         password = request.form['password']
 
         # Use text() to wrap the raw SQL query
-        user = db.session.execute(
-            text("SELECT * FROM users WHERE username = :username"),
+        user_data = db.session.execute(
+            text("SELECT id, username, first_name, last_name, phone, user_type, password FROM users WHERE username = :username"),
             {'username': username}
         ).fetchone()
-        if not user:
+
+        if not user_data:
             flash('Invalid username or password.', 'danger')
             return render_template('login.html')
+
         # Check if user exists and verify password using passlib bcrypt
-        if user and bcrypt.verify(password, user.password):
-            #flash('You have logged in successfully!', 'success')
+        if user_data and bcrypt.verify(password, user_data.password):
+            # Create a User instance with the fetched data
+            user = User(
+                id=user_data.id,
+                username=user_data.username,
+                first_name=user_data.first_name,
+                last_name=user_data.last_name,
+                phone=user_data.phone,
+                user_type=user_data.user_type,
+                password=user_data.password,  # Use the hashed password
+            )
+            login_user(user)  # Log in the user
             return redirect(url_for('main.dashboard'))  # Redirect to a dashboard or home page
         else:
             flash('Invalid username or password.', 'danger')
@@ -113,8 +126,26 @@ def login():
 
 
 @main.route('/dashboard')
+@login_required
 def dashboard():
-    return "Welcome to your dashboard!"
+    return render_template('user_home_page.html')
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.", "info")
+    return redirect(url_for('main.login'))
+
+@main.route('/book-ride')
+@login_required
+def book_ride():
+    return render_template('user_home_page.html')
+
+@main.route('/history')
+@login_required
+def history():
+    return render_template('user_home_page.html')
 
 
 @main.route('/forgot-password')

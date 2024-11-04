@@ -297,3 +297,47 @@ input[type="tel"] {
     background-color: #f8d7da; /* Red background for error messages */
     color: #721c24; /* Dark red text */
 }
+
+.action-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.btn {
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .action-container {
+        flex-direction: column; /* Stack cards vertically on smaller screens */
+        align-items: center; /* Center the cards */
+    }
+
+    .card {
+        max-width: 90%; /* Allow cards to take more width on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        font-size: 14px; /* Reduce button font size on small screens */
+    }
+}
