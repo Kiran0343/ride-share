@@ -300,15 +300,22 @@ input[type="tel"] {
 
 .action-container {
     display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     justify-content: center;
-    gap: 20px;
+    gap: 20px; /* Space between cards */
+    padding: 10px; /* Padding around the action container */
 }
 
 .card {
-    width: 100%;
-    max-width: 400px;
+    width: 100%; /* Full width on small screens */
+    max-width: 400px; /* Maintain max width */
+    min-width: 300px; /* Set a minimum width to avoid being too thin */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease-in-out;
+    margin: 10px; /* Add margin for spacing */
+    border-radius: 8px; /* Rounded corners for aesthetics */
+    padding: 20px; /* Increase padding inside the card */
+    box-sizing: border-box; /* Ensure padding doesn't affect overall width */
 }
 
 .card:hover {
@@ -323,21 +330,15 @@ input[type="tel"] {
     margin-top: 10px;
 }
 
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .action-container {
-        flex-direction: column; /* Stack cards vertically on smaller screens */
-        align-items: center; /* Center the cards */
-    }
-
+/* Media Query for Mobile Devices */
+@media (max-width: 600px) {
     .card {
-        max-width: 90%; /* Allow cards to take more width on smaller screens */
+        width: 90%; /* Adjust width for mobile screens */
+        min-width: 320px; /* Ensure a minimum width on mobile */
     }
-}
 
-@media (max-width: 480px) {
-    .btn {
-        font-size: 14px; /* Reduce button font size on small screens */
+    .action-container {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center the cards */
     }
 }
