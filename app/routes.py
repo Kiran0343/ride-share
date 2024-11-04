@@ -98,7 +98,6 @@ def login():
             text("SELECT * FROM users WHERE username = :username"),
             {'username': username}
         ).fetchone()
-
         # Check if user exists and verify password using passlib bcrypt
         if user and bcrypt.verify(password, user.password):
             flash('You have logged in successfully!', 'success')
