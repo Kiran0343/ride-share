@@ -53,7 +53,7 @@ def register():
         db.session.commit()
 
         return redirect(url_for('main.thank_you'))  # Use blueprint name
-        flash("Thanks for registering!")
+        #flash("Thanks for registering!")
     return render_template('register.html')
 
 
@@ -100,7 +100,7 @@ def login():
         ).fetchone()
         # Check if user exists and verify password using passlib bcrypt
         if user and bcrypt.verify(password, user.password):
-            flash('You have logged in successfully!', 'success')
+            #flash('You have logged in successfully!', 'success')
             return redirect(url_for('main.dashboard'))  # Redirect to a dashboard or home page
         else:
             flash('Invalid username or password.', 'danger')
