@@ -98,6 +98,9 @@ def login():
             text("SELECT * FROM users WHERE username = :username"),
             {'username': username}
         ).fetchone()
+        if not user:
+            flash('Invalid username or password.', 'danger')
+            return render_template('login.html')
         # Check if user exists and verify password using passlib bcrypt
         if user and bcrypt.verify(password, user.password):
             #flash('You have logged in successfully!', 'success')
