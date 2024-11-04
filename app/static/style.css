@@ -22,14 +22,17 @@
 .nav-left, .nav-right {
     display: flex; /* Align items within these sections using flexbox */
     align-items: center; /* Center items vertically within the flex containers */
+    font-size: 3em;
 }
 
 .menu-icon {
+    font-size: 1.5em;
     display: none; /* Hide the menu icon on larger screens */
 }
 
 .nav-right {
     gap: 15px; /* Add space between the items in the right section */
+    font-size: 1.5em;
 }
 
 body {
@@ -38,7 +41,7 @@ body {
 .nav-item {
     color: white;
     text-decoration: none;
-    font-size: 1.8em; /* Increased font size */
+    font-size: 2.4em; /* Increased font size */
     padding: 8px 12px;
     transition: background 0.3s ease;
 }
@@ -392,7 +395,7 @@ header {
 .nav-item {
     color: white;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 main {
@@ -484,7 +487,7 @@ select {
     }
 
     .menu-icon {
-        font-size: 3em; /* Increase the font size for a larger hamburger icon */
+        font-size: 5em; /* Increase the font size for a larger hamburger icon */
         cursor: pointer; /* Change the cursor to pointer for better user experience */
         color: white; /* Change color to match your navbar or for better visibility */
         display: flex; /* Use flex to center align the icon if needed */
@@ -522,7 +525,7 @@ body {
 }
 
 .menu-icon {
-    font-size: 2em;
+    font-size: 4em;
     cursor: pointer;
     color: white;
     display: none; /* Show only on mobile */
@@ -532,12 +535,13 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+    font-size: 24px;
 }
 
 .nav-item {
     color: white;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 28px;
 }
 
 /* Responsive Styles */
@@ -563,7 +567,7 @@ body {
     }
 
     .nav-item {
-        font-size: 18px;
+        font-size: 24px;
         padding: 10px 0;
     }
 }
