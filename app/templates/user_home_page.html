@@ -28,8 +28,6 @@
 
 <main style="margin-top: 6em;">
     <div class="user-home-container" style="color: white; text-align: center;">
-
-
         <div class="action-container">
             <!-- Book Ride Container -->
             <div class="card" style="background-color: #3B3B3B; padding: 20px; margin: 20px; border-radius: 10px; display: inline-block; width: 45%; vertical-align: top;">
@@ -45,8 +43,19 @@
                 <a href="/history" class="btn" style="background-color: #165580; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View History</a>
             </div>
         </div>
+
+        <!-- Next Ride Section -->
+        <div class="next-ride-container" style="background-color: #3B3B3B; padding: 20px; margin: 20px auto; border-radius: 10px; width: 80%;">
+            {% if next_ride %}
+                <h2 style="color: #D4AF37;">Your Next Ride</h2>
+                <p>Scheduled for: {{ next_ride.date }} at {{ next_ride.time }}</p>
+                <p>Ride Provider: {{ next_ride.ride_provider if next_ride.ride_provider else 'To be assigned' }}</p>
+            {% else %}
+                <h2 style="color: #D4AF37;">No Scheduled Rides</h2>
+                <p>You don't have any scheduled rides at the moment.</p>
+            {% endif %}
+        </div>
     </div>
 </main>
-
 </body>
 </html>

@@ -7,7 +7,8 @@ from sqlalchemy import text  # Import the text function for raw SQL queries
 from werkzeug.security import check_password_hash  # Import for password verification
 from passlib.hash import bcrypt
 from flask_login import login_user, login_required, logout_user, current_user
-
+from datetime import datetime, timedelta
+from .models import Ride
 
 # Initialize Firebase Admin SDK
 #cred = credentials.Certificate('ride-share.json')  # Replace with your actual path
@@ -132,7 +133,8 @@ def login():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('user_home_page.html')
+    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.insert_ts.desc(), Ride.time.asc()).first()
+    return render_template('user_home_page.html', next_ride=next_ride)
 
 @main.route('/logout')
 @login_required
@@ -141,18 +143,65 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect(url_for('main.login'))
 
-@main.route('/book-ride')
+
+@main.route('/book-ride', methods=['GET', 'POST'])
 @login_required
 def book_ride():
-    return render_template('user_home_page.html')
+    if request.method == 'POST':
+        # Handle form submission
+        date = request.form.get('date')
+        time = request.form.get('time')
+
+        if not date or not time:
+            flash("Date and time must be selected!")
+            return redirect(url_for('main.book_ride'))
+
+        # Process the booking with the date and time...
+        flash(f"Booking confirmed for {date} at {time}")
+        return render_template('main.book_ride')
+
+    # Generate the next three days
+    today = datetime.now()
+    dates = [(today + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(3)]
+
+    return render_template('book_ride.html', dates=dates)
+
 
 @main.route('/history')
 @login_required
 def history():
-    return render_template('user_home_page.html')
+    rides = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.desc()).limit(10).all()
+    # Redirect to the dashboard or another page if already logged in
+    return render_template('ride_history.html', rides = rides) # Adjust 'main.dashboard' as needed
 
 
 @main.route('/forgot-password')
 def forgot_password():
     return render_template('login.html')
+
+
+@main.route('/submit-ride', methods=['GET','POST'])
+@login_required
+def submit_ride():
+    # Retrieve form data
+    date = request.form['date']
+    time = request.form['time']
+
+    # Insert a new ride request with blank `ride_provider` and no initial update timestamp
+    new_ride = Ride(
+        user_id=current_user.id,
+        date=date,
+        time=time,
+        ride_provider='',  # Set provider as blank for now
+    )
+
+    # Add new ride request to the database
+    db.session.add(new_ride)
+    db.session.commit()
+
+    # Confirmation flash message
+    flash(f'Ride booked for {date} at {time}!', 'success')
+    return redirect(url_for('main.dashboard'))
+
+
 

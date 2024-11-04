@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
 </head>
-<body>
+<body style="background-color: #292626;">
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <p class="nav-item">{{ current_user.username }}</p>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </nav>
+</header>
 
+<main style="margin-top: 6em;">
+    <h1 style="color:#ffffff">Book a Ride</h1>
+    <form action="{{ url_for('main.submit_ride') }}" method="POST">
+        <label for="date">Select Date:</label>
+        <select id="date" name="date" required>
+            <option value="" disabled selected>Select a date</option>
+            {% for date in dates %}
+                <option value="{{ date }}">{{ date }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="time">Select Time Slot:</label>
+        <select id="time" name="time" required>
+            <option value="" disabled selected>Select a time</option>
+            <option value="09:00">09:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">01:00 PM</option>
+            <option value="14:00">02:00 PM</option>
+        </select>
+
+        <label for="pickup_location">Pickup Location:</label>
+        <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter pickup location" required>
+
+        <label for="drop_location">Drop Location:</label>
+        <input type="text" id="drop_location" name="drop_location" placeholder="Enter drop location" required>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</main>
 </body>
 </html>

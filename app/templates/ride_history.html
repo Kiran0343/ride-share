@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
+</head>
+<body style="background-color: #292626;">
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <p class="nav-item">{{ current_user.username }}</p>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main style="margin-top: 6em;">
+
+    <div class="ride-history" style="margin-top: 3em; color: white;">
+        <h2>Ride History</h2>
+        {% if rides %}
+            <table style="width: 100%; color: white; border-collapse: collapse; margin-top: 1em;">
+                <thead>
+                    <tr style="background-color: #333;">
+                        <th style="padding: 10px; border-bottom: 1px solid #555;">Ride Date</th>
+                        <th style="padding: 10px; border-bottom: 1px solid #555;">Ride Provider</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ride in rides %}
+                        <tr style="text-align: center;">
+                            <td style="padding: 10px; border-bottom: 1px solid #555;">{{ ride.date }}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #555;">{{ ride.ride_provider }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No rides available.</p>
+        {% endif %}
+    </div>
+</main>
+
+</body>
+</html>
