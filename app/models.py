@@ -1,5 +1,5 @@
 from . import db
-from werkzeug.security import generate_password_hash
+from passlib.hash import bcrypt
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -18,5 +18,9 @@ class User(db.Model):
         self.last_name = last_name
         self.phone = phone
         self.user_type = user_type
-        # Hash the password before storing it in the database
-        self.password = generate_password_hash(password)
+        # Hash the password before storing it in the database using bcrypt
+        self.password = bcrypt.hash(password)
+
+    def verify_password(self, password):
+        """Check if the provided password matches the hashed password."""
+        return bcrypt.verify(password, self.password)

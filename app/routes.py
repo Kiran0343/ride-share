@@ -5,6 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, auth
 from sqlalchemy import text  # Import the text function for raw SQL queries
 from werkzeug.security import check_password_hash  # Import for password verification
+from passlib.hash import bcrypt
 
 
 # Initialize Firebase Admin SDK
@@ -98,14 +99,15 @@ def login():
             {'username': username}
         ).fetchone()
 
-        # Check if user exists and verify password
-        if user and check_password_hash(user.password, password):
+        # Check if user exists and verify password using passlib bcrypt
+        if user and bcrypt.verify(password, user.password):
             flash('You have logged in successfully!', 'success')
             return redirect(url_for('main.dashboard'))  # Redirect to a dashboard or home page
         else:
             flash('Invalid username or password.', 'danger')
 
     return render_template('login.html')  # Render the login page again if not POST or on failure
+
 
 @main.route('/dashboard')
 def dashboard():
