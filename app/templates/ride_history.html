@@ -5,10 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* General Styles */
+        body {
+            background-color: #292626;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .navbar {
+            background-color: #165580;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .menu-icon {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+
+        .ride-history {
+            margin-top: 3em;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Table for larger screens */
+        .ride-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            border: 1px solid white;
+        }
+
+        .ride-table th, .ride-table td {
+            padding: 10px;
+            border: 1px solid white;
+            text-align: center;
+        }
+
+        /* Card layout for smaller screens */
+        .ride-card {
+            display: none;
+            background-color: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid white;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .ride-card div {
+            margin-bottom: 8px;
+        }
+
+        .ride-card button {
+            color: white;
+            background-color: red;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            /* Hide table and show cards */
+            .ride-table {
+                display: none;
+            }
+
+            .ride-card {
+                display: block;
+            }
+
+            /* Navbar adjustments */
+            .nav-right {
+                display: none;
+                flex-direction: column;
+                background-color: #165580;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 100%;
+            }
+
+            .nav-right.active {
+                display: flex;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+        }
+    </style>
     <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+
         function confirmCancellation(rideId, row) {
             if (confirm("Are you sure you want to cancel this ride?")) {
-                // Send an AJAX request to delete the ride
                 fetch(`/cancel_ride/${rideId}`, {
                     method: 'POST',
                     headers: {
@@ -18,7 +129,6 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        // Remove the row from the table
                         row.remove();
                         alert("Ride canceled successfully.");
                     } else {
@@ -31,11 +141,12 @@
                 });
             }
         }
+
     </script>
 </head>
-<body style="background-color: #292626;">
+<body>
 <header>
-    <nav class="navbar" style="background-color: #165580;">
+    <nav class="navbar">
         <div class="nav-left">
             <a href="/" class="nav-item">Ride Share</a>
         </div>
@@ -47,46 +158,66 @@
     </nav>
 </header>
 
-<main style="margin-top: 6em;">
-    <div class="ride-history" style="margin-top: 3em; color: white; font-size: 18px">
-        <h2 style="text-align:center">Ride History</h2>
+<main>
+    <div class="ride-history">
+        <h2>Ride History</h2>
 
         {% if rides %}
-            <table id="rideTable" style="width: 100%; color: white; border-collapse: collapse; margin-top: 1em; border: 1px solid white;">
+            <!-- Table View for Large Screens -->
+            <table class="ride-table">
                 <thead>
-                    <tr style="background-color: #333;">
-                        <th style="padding: 10px; border: 1px solid white;">Ride Date</th>
-                        <th style="padding: 10px; border: 1px solid white;">Ride Time</th>
-                        <th style="padding: 10px; border: 1px solid white;">Ride Provider</th>
-                        <th style="padding: 10px; border: 1px solid white;">Pick-up Location</th>
-                        <th style="padding: 10px; border: 1px solid white;">Drop Location</th>
-                        <th style="padding: 10px; border: 1px solid white;">Ride Status</th>
-                        <th style="padding: 10px; border: 1px solid white;">Actions</th>
+                    <tr>
+                        <th>Ride Date</th>
+                        <th>Ride Time</th>
+                        <th>Ride Provider</th>
+                        <th>Pick-up Location</th>
+                        <th>Drop Location</th>
+                        <th>Ride Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for ride in rides %}
-                        <tr style="text-align: center;">
-                            <td style="padding: 10px; border: 1px solid white;">{{ ride.date }}</td>
-                            <td style="padding: 10px; border: 1px solid white;">{{ ride.time }}</td>
-                            <td style="padding: 10px; border: 1px solid white;">{{ ride.ride_provider }}</td>
-                            <td style="padding: 10px; border: 1px solid white;">{{ ride.pickup_location }}</td>
-                            <td style="padding: 10px; border: 1px solid white;">{{ ride.drop_location }}</td>
-                            <td class="ride-status" style="padding: 10px; border: 1px solid white;">{{ ride.ride_status }}</td>
+                        <tr>
+                            <td>{{ ride.date }}</td>
+                            <td>{{ ride.time }}</td>
+                            <td>{{ ride.ride_provider }}</td>
+                            <td>{{ ride.pickup_location }}</td>
+                            <td>{{ ride.drop_location }}</td>
+                            <td>{{ ride.ride_status }}</td>
                             <td style="padding: 10px; border: 1px solid white;">
-                                <button onclick="confirmCancellation('{{ ride.id }}', this.closest('tr'))" style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;">
-                                    Cancel
-                                </button>
-                            </td>
+    <button onclick="confirmCancellation('{{ ride.id }}', this.closest('tr'))" style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;">
+        Cancel
+    </button>
+    <button onclick="editRide('{{ ride.id }}')" style="color: white; background-color: #4CAF50; border: none; padding: 5px 10px; cursor: pointer; margin-left: 5px;">
+        Edit
+    </button>
+</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            <!-- Card View for Small Screens -->
+            {% for ride in rides %}
+                <div class="ride-card">
+                    <div><strong>Ride Date:</strong> {{ ride.date }}</div>
+                    <div><strong>Ride Time:</strong> {{ ride.time }}</div>
+                    <div><strong>Ride Provider:</strong> {{ ride.ride_provider }}</div>
+                    <div><strong>Pick-up Location:</strong> {{ ride.pickup_location }}</div>
+                    <div><strong>Drop Location:</strong> {{ ride.drop_location }}</div>
+                    <div><strong>Ride Status:</strong> {{ ride.ride_status }}</div>
+                    <button onclick="confirmCancellation('{{ ride.id }}', this.parentElement)">
+                        Cancel
+                    </button>
+                </div>
+            {% endfor %}
         {% else %}
             <p>No rides available.</p>
         {% endif %}
     </div>
 </main>
+
 <footer class="footer">
     <p>&copy; 2024 Ride Share Company. All rights reserved.</p>
     <p>
