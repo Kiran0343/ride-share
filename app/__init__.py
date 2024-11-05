@@ -16,6 +16,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     csrf = CSRFProtect(app)
+    csrf.init_app(app)
+    app.config['WTF_CSRF_ENABLED'] = True
 
     # Bind extensions to app
     db.init_app(app)
