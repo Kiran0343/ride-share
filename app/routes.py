@@ -133,7 +133,7 @@ def login():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.insert_ts.desc(), Ride.time.asc()).first()
+    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.insert_ts.asc(), Ride.time.asc()).first()
     return render_template('user_home_page.html', next_ride=next_ride)
 
 @main.route('/logout')
@@ -170,7 +170,7 @@ def book_ride():
 @main.route('/history')
 @login_required
 def history():
-    rides = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.desc()).limit(10).all()
+    rides = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(),Ride.time.asc()).limit(10).all()
     # Redirect to the dashboard or another page if already logged in
     return render_template('ride_history.html', rides = rides) # Adjust 'main.dashboard' as needed
 
@@ -186,6 +186,8 @@ def submit_ride():
     # Retrieve form data
     date = request.form['date']
     time = request.form['time']
+    pickup_location = request.form['pickup_location']
+    drop_location = request.form['drop_location']
 
     # Insert a new ride request with blank `ride_provider` and no initial update timestamp
     new_ride = Ride(
@@ -193,6 +195,9 @@ def submit_ride():
         date=date,
         time=time,
         ride_provider='',  # Set provider as blank for now
+        pickup_location=pickup_location,
+        drop_location=drop_location,
+        ride_status = 'Pending',
     )
 
     # Add new ride request to the database

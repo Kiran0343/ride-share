@@ -51,13 +51,19 @@ class Ride(db.Model):
     date = db.Column(db.Date, nullable=False)  # Ride date
     time = db.Column(db.Time, nullable=False)  # Ride time
     ride_provider = db.Column(db.String(50), nullable=False)  # Ride provider name
+    pickup_location = db.Column(db.String(500), nullable=False)  # Ride provider name
+    drop_location = db.Column(db.String(500), nullable=False)  # Ride provider name
+    ride_status = db.Column(db.String(20), nullable=False)  # Ride provider name
     insert_ts = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Timestamp for insertion
     updt_ts = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)  # Timestamp for updates
 
-    def __init__(self, user_id, date, time, ride_provider):
+    def __init__(self, user_id, date, time, ride_provider,pickup_location,drop_location,ride_status):
         self.user_id = user_id
         self.date = date
         self.time = time
         self.ride_provider = ride_provider
+        self.pickup_location = pickup_location
+        self.drop_location = drop_location
+        self.ride_status = ride_status
         self.insert_ts = datetime.utcnow()  # Default to current time if not provided
 
