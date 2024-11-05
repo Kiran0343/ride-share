@@ -189,9 +189,8 @@
     <button onclick="confirmCancellation('{{ ride.id }}', this.closest('tr'))" style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;">
         Cancel
     </button>
-    <button onclick="editRide('{{ ride.id }}')" style="color: white; background-color: #4CAF50; border: none; padding: 5px 10px; cursor: pointer; margin-left: 5px;">
-        Edit
-    </button>
+     <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green;font-size:14px; border: none; padding: 5px 10px; cursor: pointer;">Edit</a>
+
 </td>
                         </tr>
                     {% endfor %}
@@ -200,22 +199,26 @@
 
             <!-- Card View for Small Screens -->
             {% for ride in rides %}
-                <div class="ride-card">
-                    <div><strong>Ride Date:</strong> {{ ride.date }}</div>
-                    <div><strong>Ride Time:</strong> {{ ride.time }}</div>
-                    <div><strong>Ride Provider:</strong> {{ ride.ride_provider }}</div>
-                    <div><strong>Pick-up Location:</strong> {{ ride.pickup_location }}</div>
-                    <div><strong>Drop Location:</strong> {{ ride.drop_location }}</div>
-                    <div><strong>Ride Status:</strong> {{ ride.ride_status }}</div>
-                    <button onclick="confirmCancellation('{{ ride.id }}', this.parentElement)">
-                        Cancel
-                    </button>
-                </div>
-            {% endfor %}
+    <div class="ride-card">
+        <div><strong>Ride Date:</strong> {{ ride.date }}</div>
+        <div><strong>Ride Time:</strong> {{ ride.time }}</div>
+        <div><strong>Ride Provider:</strong> {{ ride.ride_provider }}</div>
+        <div><strong>Pick-up Location:</strong> {{ ride.pickup_location }}</div>
+        <div><strong>Drop Location:</strong> {{ ride.drop_location }}</div>
+        <div><strong>Ride Status:</strong> {{ ride.ride_status }}</div>
+        <button onclick="confirmCancellation('{{ ride.id }}', this.parentElement)">
+            Cancel
+        </button>
+        <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green; padding: 2.5px 7px; display: inline-block; text-align: center; text-decoration: none; cursor: pointer;">
+            Edit
+        </a>
+    </div>
+{% endfor %}
         {% else %}
             <p>No rides available.</p>
         {% endif %}
     </div>
+    <br><br><br>
 </main>
 
 <footer class="footer">

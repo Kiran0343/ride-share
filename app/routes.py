@@ -218,3 +218,36 @@ def cancel_ride(ride_id):
          db.session.commit()
     return redirect(url_for('main.history'))
 
+
+@main.route('/edit_ride/<int:ride_id>')
+@login_required
+def edit_ride(ride_id):
+    ride = Ride.query.get_or_404(ride_id)
+
+    # Ensure user authorization
+    if ride.user_id != current_user.id:
+        flash("You are not authorized to edit this ride.", "danger")
+        return redirect(url_for('main.history'))
+
+    # Fetch dates for the dropdown
+    today = datetime.now()
+    dates = [(today + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(3)]
+
+    return render_template('book_ride.html', ride=ride, dates=dates)
+
+
+@main.route('/update_ride/<int:ride_id>', methods=['POST'])
+@login_required
+def update_ride(ride_id):
+    # Fetch the ride from the database
+    ride = Ride.query.get_or_404(ride_id)
+
+    # Update the ride attributes based on form data
+    ride.date = request.form['date']
+    ride.time = request.form['time']
+    ride.pickup_location = request.form['pickup_location']
+    ride.drop_location = request.form['drop_location']
+    # Save changes to the database
+    db.session.commit()
+    return redirect(url_for('main.history'))
+
