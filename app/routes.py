@@ -31,6 +31,9 @@ def home():
 
 @main.route('/register', methods=['GET','POST'])
 def register():
+    if current_user.is_authenticated:
+        # Redirect to the dashboard or another page if already logged in
+        return redirect(url_for('main.dashboard'))  # Adjust 'main.dashboard' as needed
     if request.method == 'POST':
         # Get form data
         username = request.form['username']
@@ -133,7 +136,8 @@ def login():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.insert_ts.asc(), Ride.time.asc()).first()
+    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(), Ride.time.asc()).first()
+    print (next_ride)
     return render_template('user_home_page.html', next_ride=next_ride)
 
 @main.route('/logout')
