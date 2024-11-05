@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleMenu() {
+            const navRight = document.querySelector('.nav-right');
+            navRight.classList.toggle('active');
+        }
+    </script>
     <style>
         /* Additional styling for profile page */
         body {
@@ -69,21 +75,11 @@
         .button-group button:hover {
             background-color: #124a67;
         }
-        .footer {
-            text-align: center;
-            color: #dddddd;
-            font-size: 0.9rem;
-            margin-top: 2rem;
-        }
-        .footer a {
-            color: #cccccc;
-            margin: 0 0.5rem;
-            text-decoration: none;
-        }
+
         .flash-messages {
             margin-top: 0px;
             text-align: center;
-            transition: height 0.6s ease; /* Smooth transition for height */
+            transition: height 0.0s ease; /* Smooth transition for height */
             overflow: hidden; /* Prevents showing the space when messages are removed */
         }
         .alert {
@@ -133,7 +129,7 @@
         </div>
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <div class="nav-right">
-            <a href ="/profile"><p class="nav-item">{{ current_user.username }}</p></a>
+            <a href="/profile" class="nav-item">{{ current_user.username }}</a>
             <a href="/logout" class="nav-item">Logout</a>
         </div>
     </nav>
