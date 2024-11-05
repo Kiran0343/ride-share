@@ -29,6 +29,7 @@
 <main style="margin-top: 6em;">
     <h1 style="color:#ffffff">Book a Ride</h1>
     <form action="{{ url_for('main.submit_ride') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="date">Select Date:</label>
         <select id="date" name="date" required>
             <option value="" disabled selected>Select a date</option>
