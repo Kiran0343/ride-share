@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Additional styling for profile page */
+        body {
+            font-family: Arial, sans-serif;
+            color: #FFFFFF;
+            background-color: #292626;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .profile-container {
+            background-color: #3a3a3a;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+        .profile-container h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #FFD700;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+        .profile-info label {
+            margin-bottom: 0.3rem;
+            font-weight: bold;
+        }
+        .profile-info input {
+            padding: 0.6rem;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #555555;
+            color: #ffffff;
+            outline: none;
+        }
+        .profile-info input[readonly] {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            background-color: #165580;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-group button:hover {
+            background-color: #124a67;
+        }
+        .footer {
+            text-align: center;
+            color: #dddddd;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+        .footer a {
+            color: #cccccc;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        .flash-messages {
+            margin-top: 0px;
+            text-align: center;
+            transition: height 0.6s ease; /* Smooth transition for height */
+            overflow: hidden; /* Prevents showing the space when messages are removed */
+        }
+        .alert {
+            padding: 1rem;
+            margin: 0.0rem 0;
+            border-radius: 0px;
+            transition: opacity 0.6s ease; /* Smooth fade out */
+        }
+        .alert-success {
+            background-color: #165548;
+            color: #ffffff;
+        }
+        .alert-error {
+            background-color: #f44336;
+            color: #ffffff;
+        }
+    </style>
+    <script>
+        function enableEditing() {
+            document.querySelectorAll('.profile-info input').forEach(input => input.readOnly = false);
+            document.getElementById('saveBtn').style.display = 'inline-block';
+        }
+        window.onload = function() {
+            const flashMessages = document.querySelectorAll('.flash-messages .alert');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    const flashContainer = document.querySelector('.flash-messages');
+                    flashContainer.style.height = `${flashContainer.offsetHeight}px`; // Set current height
+                    message.style.opacity = '0'; // Fade out
+
+                    setTimeout(() => {
+                        message.remove(); // Remove the message after fade out
+                        if (flashContainer.children.length === 0) {
+                            flashContainer.style.height = '0'; // Collapse height if no messages left
+                        }
+                    }, 600); // Time for fade out effect
+                }, 3000); // Time before it starts to fade out (in milliseconds)
+            });
+        };
+    </script>
+</head>
+<body>
+<header>
+    <nav class="navbar" style="background-color: #165580;">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <a href ="/profile"><p class="nav-item">{{ current_user.username }}</p></a>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main class="profile-container" style="margin-top: 9em;margin-bottom: 6em;">
+    <h1>User Profile</h1>
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/profile/update" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="profile-info">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+        </div>
+
+        <div class="profile-info">
+            <label for="first_name">First name:</label>
+            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" readonly>
+        </div>
+
+        <div class="profile-info">
+            <label for="last_name">Last name:</label>
+            <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" readonly>
+        </div>
+
+        <div class="profile-info">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" value="{{ user.phone }}" readonly>
+        </div>
+
+        <div class="button-group">
+            <button type="button" onclick="enableEditing()">Edit</button>
+            <button type="submit" id="saveBtn" style="display: none;">Save</button>
+        </div>
+    </form>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2024 Ride Share Company. All rights reserved.</p>
+    <p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/contact">Contact Us</a>
+    </p>
+</footer>
+</body>
+</html>

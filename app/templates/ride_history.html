@@ -81,9 +81,48 @@
             cursor: pointer;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 15% auto;
+            text-align: center;
+        }
+
+        .modal-content button {
+            margin: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background-color: red;
+            color: white;
+            border: none;
+        }
+
+        .close-btn {
+            background-color: gray;
+            color: white;
+            border: none;
+        }
+
         /* Media Queries */
         @media (max-width: 768px) {
-            /* Hide table and show cards */
             .ride-table {
                 display: none;
             }
@@ -92,7 +131,6 @@
                 display: block;
             }
 
-            /* Navbar adjustments */
             .nav-right {
                 display: none;
                 flex-direction: column;
@@ -118,30 +156,43 @@
             navRight.classList.toggle('active');
         }
 
-        function confirmCancellation(rideId, row) {
-            if (confirm("Are you sure you want to cancel this ride?")) {
-                fetch(`/cancel_ride/${rideId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': "{{ csrf_token() }}"  // If CSRF is enabled
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        row.remove();
-                        alert("Ride canceled successfully.");
-                    } else {
-                        alert("Error canceling the ride. Please try again.");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert("Error canceling the ride. Please try again.");
-                });
-            }
+        let currentRideId;
+        let currentRow;
+
+        function openModal(rideId, row) {
+            currentRideId = rideId;
+            currentRow = row;
+            document.getElementById("confirmModal").style.display = "block";
         }
 
+        function closeModal() {
+            document.getElementById("confirmModal").style.display = "none";
+        }
+
+        function confirmCancellation() {
+            fetch(`/cancel_ride/${currentRideId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': "{{ csrf_token() }}"  // If CSRF is enabled
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    currentRow.remove();
+                    alert("Ride canceled successfully.");
+                } else {
+                    alert("Error canceling the ride. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error canceling the ride. Please try again.");
+            })
+            .finally(() => {
+                closeModal();
+            });
+        }
     </script>
 </head>
 <body>
@@ -185,13 +236,14 @@
                             <td>{{ ride.pickup_location }}</td>
                             <td>{{ ride.drop_location }}</td>
                             <td>{{ ride.ride_status }}</td>
-                            <td style="padding: 10px; border: 1px solid white;">
-    <button onclick="confirmCancellation('{{ ride.id }}', this.closest('tr'))" style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;">
-        Cancel
-    </button>
-     <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green;font-size:14px; border: none; padding: 5px 10px; cursor: pointer;">Edit</a>
-
-</td>
+                            <td>
+                                <button onclick="openModal('{{ ride.id }}', this.closest('tr'))" style="color: white; background-color: red; border: none; padding: 5px 10px; cursor: pointer;">
+                                    Cancel
+                                </button>
+                                <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green; padding: 5px 10px; cursor: pointer;">
+                                    Edit
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -199,26 +251,35 @@
 
             <!-- Card View for Small Screens -->
             {% for ride in rides %}
-    <div class="ride-card">
-        <div><strong>Ride Date:</strong> {{ ride.date }}</div>
-        <div><strong>Ride Time:</strong> {{ ride.time }}</div>
-        <div><strong>Ride Provider:</strong> {{ ride.ride_provider }}</div>
-        <div><strong>Pick-up Location:</strong> {{ ride.pickup_location }}</div>
-        <div><strong>Drop Location:</strong> {{ ride.drop_location }}</div>
-        <div><strong>Ride Status:</strong> {{ ride.ride_status }}</div>
-        <button onclick="confirmCancellation('{{ ride.id }}', this.parentElement)">
-            Cancel
-        </button>
-        <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green; padding: 2.5px 7px; display: inline-block; text-align: center; text-decoration: none; cursor: pointer;">
+                <div class="ride-card">
+                    <div><strong>Ride Date:</strong> {{ ride.date }}</div>
+                    <div><strong>Ride Time:</strong> {{ ride.time }}</div>
+                    <div><strong>Ride Provider:</strong> {{ ride.ride_provider }}</div>
+                    <div><strong>Pick-up Location:</strong> {{ ride.pickup_location }}</div>
+                    <div><strong>Drop Location:</strong> {{ ride.drop_location }}</div>
+                    <div><strong>Ride Status:</strong> {{ ride.ride_status }}</div>
+                    <button onclick="openModal('{{ ride.id }}', this.parentElement)">
+                        Cancel
+                    </button>
+                    <a href="{{ url_for('main.edit_ride', ride_id=ride.id) }}" style="color: white; background-color: green; padding: 1px 7px; display: inline-block; text-align: center; text-decoration: none; cursor: pointer;">
             Edit
         </a>
-    </div>
-{% endfor %}
+                </div>
+            {% endfor %}
         {% else %}
             <p>No rides available.</p>
         {% endif %}
     </div>
 </main>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to cancel this ride?</p>
+        <button class="cancel-btn" onclick="confirmCancellation()">Yes, Cancel</button>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
 
 <footer class="footer">
     <p>&copy; 2024 Ride Share Company. All rights reserved.</p>

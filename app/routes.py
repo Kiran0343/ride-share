@@ -137,7 +137,6 @@ def login():
 @login_required
 def dashboard():
     next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(), Ride.time.asc()).first()
-    print (next_ride)
     return render_template('user_home_page.html', next_ride=next_ride)
 
 @main.route('/logout')
@@ -209,8 +208,8 @@ def submit_ride():
     db.session.commit()
 
     # Confirmation flash message
-    flash(f'Ride booked for {date} at {time}!', 'success')
-    return redirect(url_for('main.dashboard'))
+    #flash(f'Ride booked for {date} at {time}!', 'success')
+    return redirect(url_for('main.history'))
 
 
 
@@ -254,4 +253,39 @@ def update_ride(ride_id):
     # Save changes to the database
     db.session.commit()
     return redirect(url_for('main.history'))
+
+@main.route('/profile')
+@login_required
+def profile():
+    user = User.query.get(current_user.id)  # Get the current user's data
+    print (user)
+    return render_template('profile.html', user=user)
+
+
+@main.route('/profile/update', methods=['GET','POST'])
+@login_required
+def update_profile():
+    # Get the form data
+    username = request.form.get('username')
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    phone = request.form.get('phone')
+
+    try:
+        # Update current user's details
+        current_user.username = username
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.phone = phone
+
+        # Commit changes to the database
+        db.session.commit()
+
+        flash('Profile updated successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        #flash(f'An error occurred while updating the profile: {str(e)}', 'error')
+
+    # Redirect back to the profile page
+    return redirect(url_for('main.profile'))
 
