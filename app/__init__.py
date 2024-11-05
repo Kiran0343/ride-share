@@ -2,6 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
+
+
+
+
 
 # Initialize extensions but do not bind to app yet
 db = SQLAlchemy()
@@ -10,6 +15,7 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    csrf = CSRFProtect(app)
 
     # Bind extensions to app
     db.init_app(app)

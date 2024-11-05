@@ -210,3 +210,11 @@ def submit_ride():
 
 
 
+@main.route('/cancel_ride/<int:ride_id>', methods=['POST'])
+def cancel_ride(ride_id):
+    ride = Ride.query.get(ride_id)
+    if ride:
+         db.session.delete(ride)
+         db.session.commit()
+    return redirect(url_for('main.history'))
+

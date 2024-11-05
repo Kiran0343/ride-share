@@ -570,3 +570,21 @@ body {
         padding: 10px 0;
     }
 }
+
+
+.footer {
+            background-color: #165580;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer a {
+            color: #165580;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
