@@ -43,8 +43,7 @@ def register():
         user_type = request.form['user_type']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        #email = request.form['email']
-        email = 'kiran.kancharla92@gmail.com'
+        email = request.form['email']
 
         # Validate password match
         if password != confirm_password:
@@ -346,7 +345,7 @@ def validate_otp():
                 phone=stored_data['phone'],
                 user_type=stored_data['user_type'],
                 password=stored_data['password'],  # Hash before saving in real case
-                #email=stored_data['email']
+                email=stored_data['email']
             )
 
             # Add and commit the new user to the database

@@ -11,18 +11,20 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(10), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     user_type = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
     # Define a relationship with the Ride table
     rides = db.relationship('Ride', backref='user', lazy=True)
 
-    def __init__(self, username, first_name='', last_name='', phone='', user_type='', password='', id=None):
+    def __init__(self, username, first_name='', last_name='', phone='',email='', user_type='', password='', id=None):
         self.id = id
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.phone = phone
+        self.email = email
         self.user_type = user_type
         self.password = bcrypt.hash(password)  # Store the hashed password
 

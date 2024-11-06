@@ -13,6 +13,7 @@
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm_password').value;
+            const email = document.getElementById('email').value;
 
             // Username cannot contain spaces
             if (/\s/.test(username)) {
@@ -43,6 +44,11 @@
                 alert("Password and Confirm Password must match.");
                 return false;
             }
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+                }
 
             return true; // Form is valid
         }
@@ -94,45 +100,47 @@
 
 <main style="margin-top: 6em;margin-bottom: 6em;">
     <div class="register-container">
-        <h1>Register</h1>
+        <h1>REGISTR BELOW</h1>
         <form action="{{ url_for('main.register') }}" method="POST" onsubmit="return validateForm()">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
-                <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
             </div>
 
             <div class="form-group">
-                <label for="first_name">First Name:</label>
                 <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
             </div>
 
             <div class="form-group">
-                <label for="last_name">Last Name:</label>
                 <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
             </div>
 
+            <div class="form-group">
+                <input type="text" id="email" name="email" placeholder="Enter email id" required>
+            </div>
+
             <div class="form-group phone-group">
-                <label for="phone">Phone Number:</label>
                 <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
             </div>
 
             <!-- User Type Dropdown -->
             <div class="form-group user-type-group">
-                <label for="user_type">User Type:</label>
-                <select id="user_type" name="user_type" required>
-                    <option value="user">User</option>
-                    <option value="ride_provider">Ride Provider</option>
-                </select>
-            </div>
+    <div>
+        <input type="radio" id="user" name="user_type" value="user" required>
+        <label for="user">User</label>
+    </div>
+    <div>
+        <input type="radio" id="ride_provider" name="user_type" value="ride_provider" required>
+        <label for="ride_provider">Ride Provider</label>
+    </div>
+</div>
+
 
             <div class="form-group">
-                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
 
             <div class="form-group">
-                <label for="confirm_password">Confirm Password:</label>
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
             </div>
 

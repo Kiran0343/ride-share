@@ -39,10 +39,10 @@
         .otp-input {
             font-size: 1.5rem;
             padding: 0.5rem;
-            width: 3rem;
-            margin: 0.5rem;
+            width: 2rem;
+            margin: 0.2rem;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 2px;
             border: 1px solid #cccccc;
             background-color: #555555;
             color: #ffffff;
@@ -74,6 +74,19 @@
             background-color: #124a67;
         }
     </style>
+    <script>
+        function moveToNext(current, nextFieldID) {
+            if (current.value.length === 1) {
+                document.getElementsByName(nextFieldID)[0].focus();
+            }
+        }
+
+        function moveToPrevious(event, prevFieldID) {
+            if (event.key === "Backspace" && event.target.value === "") {
+                document.getElementsByName(prevFieldID)[0].focus();
+            }
+        }
+    </script>
 </head>
 <body>
 <header>

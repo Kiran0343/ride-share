@@ -77,47 +77,41 @@ h1 {
     color: #333;
 }
 
-.form-group {
-    font-size: 1.4em;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="tel"],
-input[type="password"] {
+/* Input and select field styling with increased size and blue border */
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="password"],
+.form-group select {
     width: 100%;
-    padding: 10px;
+    padding: 6px; /* Increased padding for larger input box */
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #f0f0f0;
+    font-size: 1.2em; /* Larger font size */
+    transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="password"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #66b2ff; /* Lighter blue on focus */
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select,
+textarea {
+    color: #333; /* Set desired text color */
+    border: 1px solid #165580; /* Blue border */
+    padding: 8px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus,
-input[type="tel"]:focus,
-input[type="password"]:focus {
-    border-color: #4facfe; /* Highlight border color on focus */
-}
-
-.radio-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.radio-group label {
-    font-weight: normal;
-}
-
-.form-actions {
-    display: flex;
-    justify-content: space-between; /* Space between buttons */
-    align-items: center;
-    margin-top: 20px;
+input::placeholder {
+    color: #888; /* Placeholder text color */
 }
 
 .btn {
@@ -155,8 +149,20 @@ input[type="password"]:focus {
 
 
 /* Radio Button Font Size */
-.radio-group label {
-    font-size: 24px;
+.form-group.user-type-group div {
+    margin-bottom: 10px;
+}
+
+.form-group.user-type-group input[type="radio"] {
+transform: scale(1.8);
+    margin-left: 20px; /* Space between the radio button and label */
+    margin-right: 5px;
+    accent-color: #165580; /* Custom color for radio button */
+}
+
+.form-group.user-type-group label {
+    font-size: 20px;
+    color: #fff; /* Label color */
 }
 
 /* Country Code Styling */
@@ -195,11 +201,14 @@ input[type="tel"] {
 }
 
 .user-type-group select {
-    width: 100%; /* Same width as other input fields */
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 100%;
+    padding: 4px; /* Increased padding for larger input box */
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: blue;
+    font-size: 1.2em; /* Larger font size */
+    transition: border-color 0.3s;
 }
 
 .home-container {
