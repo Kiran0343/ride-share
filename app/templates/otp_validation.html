@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .otp-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .otp-container h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px; /* Adds space between input fields */
+        }
+
+        .otp-input {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .resend-link {
+            display: block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .resend-link:hover {
+            text-decoration: underline;
+        }
+
+        body {
+            background-color: #292626;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <script>
+        function moveToNext(current, nextFieldID) {
+            if (current.value.length === 1) {
+                document.getElementsByName(nextFieldID)[0].focus();
+            }
+        }
+
+        function moveToPrevious(event, prevFieldID) {
+            if (event.key === "Backspace" && event.target.value === "") {
+                document.getElementsByName(prevFieldID)[0].focus();
+            }
+        }
+    </script>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="/" class="nav-item">Ride Share</a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <a href="/login" class="nav-item">Login</a>
+            <a href="/register" class="nav-item">Register</a>
+        </div>
+    </nav>
+</header>
+<main class="otp-container" style="margin-top: 6em;margin-bottom: 6em;">
+    <h2>Enter OTP</h2>
+    <form action="/verify_otp" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="otp-input-container">
+            <input type="text" maxlength="1" class="otp-input" name="otp1" required oninput="moveToNext(this, 'otp2')">
+            <input type="text" maxlength="1" class="otp-input" name="otp2" required oninput="moveToNext(this, 'otp3')" onkeydown="moveToPrevious(event, 'otp1')">
+            <input type="text" maxlength="1" class="otp-input" name="otp3" required oninput="moveToNext(this, 'otp4')" onkeydown="moveToPrevious(event, 'otp2')">
+            <input type="text" maxlength="1" class="otp-input" name="otp4" required oninput="moveToNext(this, 'otp5')" onkeydown="moveToPrevious(event, 'otp3')">
+            <input type="text" maxlength="1" class="otp-input" name="otp5" required oninput="moveToNext(this, 'otp6')" onkeydown="moveToPrevious(event, 'otp4')">
+            <input type="text" maxlength="1" class="otp-input" name="otp6" required onkeydown="moveToPrevious(event, 'otp5')">
+        </div>
+        <button type="submit" class="submit-button">Verify OTP</button>
+        <a href="/verify_otp" class="resend-link">Didn't receive OTP? Send again</a>
+    </form>
+</main>
+<footer class="footer">
+    <p>&copy; 2024 Ride Share Company. All rights reserved.</p>
+    <p>
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/contact">Contact Us</a>
+    </p>
+</footer>
+</body>
+</html>
