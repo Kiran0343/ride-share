@@ -396,3 +396,32 @@ def verify_otp():
             return redirect(url_for('main.verify_otp'))
 
     return render_template('otp_validation.html')  # Render OTP verification page
+
+
+@main.route('/profile/change_password', methods=['POST'])
+@login_required
+def change_password():
+    password = request.form.get('password')
+    confirm_password = request.form.get('confirm_password')
+
+    # Check if passwords match
+    if password != confirm_password:
+        flash("Passwords do not match", "error")
+        return redirect(url_for('profile'))
+
+    # Validate password complexity
+    if (not any(char.isupper() for char in password) or
+            not any(char.islower() for char in password) or
+            not any(char.isdigit() for char in password) or
+            not any(char in '!@#$%^&*()-_=+' for char in password)):
+        flash("Password must include an uppercase letter, a lowercase letter, a number, and a special character.",
+              "error")
+        return redirect(url_for('profile'))
+
+    # Update password in the database
+    hashed_password = bcrypt.hash(password)
+    current_user.password = hashed_password
+    db.session.commit()
+
+    flash("Password updated successfully", "success")
+    return redirect(url_for('main.profile'))

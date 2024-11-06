@@ -10,9 +10,53 @@
             const navRight = document.querySelector('.nav-right');
             navRight.classList.toggle('active');
         }
+
+        function enableEditing() {
+            document.querySelectorAll('.profile-info input').forEach(input => input.readOnly = false);
+            document.getElementById('saveBtn').style.display = 'inline-block';
+        }
+
+        function showChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const specialCharacterRegex = /[!@#$%^&*()-_=+]/;
+            const uppercaseRegex = /[A-Z]/;
+            const numberRegex = /[0-9]/;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+            if (!specialCharacterRegex.test(password) || !uppercaseRegex.test(password) || !numberRegex.test(password)) {
+                alert("Password must include an uppercase letter, a number, and a special character.");
+                return false;
+            }
+            return true;
+        }
     </script>
+    <script>
+    // Automatically hide flash messages after 3 seconds
+    setTimeout(() => {
+        const flashMessages = document.querySelector('.flash-messages');
+        if (flashMessages) {
+            flashMessages.style.opacity = '0';
+            // Remove flash messages from the DOM after fade-out animation
+            setTimeout(() => flashMessages.remove(), 600); // Allow time for fade-out
+        }
+    }, 3000); // Adjust time as needed (3000ms = 3 seconds)
+</script>
+
     <style>
-        /* Additional styling for profile page */
+        /* Additional styling for profile page and modal */
+        /* Existing styles here... */
         body {
             font-family: Arial, sans-serif;
             color: #FFFFFF;
@@ -98,30 +142,66 @@
             background-color: #f44336;
             color: #ffffff;
         }
-    </style>
-    <script>
-        function enableEditing() {
-            document.querySelectorAll('.profile-info input').forEach(input => input.readOnly = false);
-            document.getElementById('saveBtn').style.display = 'inline-block';
-        }
-        window.onload = function() {
-            const flashMessages = document.querySelectorAll('.flash-messages .alert');
-            flashMessages.forEach(message => {
-                setTimeout(() => {
-                    const flashContainer = document.querySelector('.flash-messages');
-                    flashContainer.style.height = `${flashContainer.offsetHeight}px`; // Set current height
-                    message.style.opacity = '0'; // Fade out
+        /* Modal styling */
+        #changePasswordModal {
+    display: none; /* Keeps it hidden initially */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
 
-                    setTimeout(() => {
-                        message.remove(); // Remove the message after fade out
-                        if (flashContainer.children.length === 0) {
-                            flashContainer.style.height = '0'; // Collapse height if no messages left
-                        }
-                    }, 600); // Time for fade out effect
-                }, 3000); // Time before it starts to fade out (in milliseconds)
-            });
-        };
-    </script>
+.modal-content {
+    background-color: #3a3a3a;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Adds shadow for better visibility */
+    margin: auto; /* Centers it horizontally within its parent */
+}
+
+
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 0.1rem;
+            color: #FFFFFF;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.6rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        .modal-content button {
+            background-color: #165580;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #124a67;
+        }
+
+        .close-btn {
+            background-color: #f44336;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -137,10 +217,10 @@
     </nav>
 </header>
 
-<main class="profile-container" style="margin-top: 5em;margin-bottom: 6em;">
+<main class="profile-container" style="margin-top: 5em; margin-bottom: 6em;">
     <h1>User Profile</h1>
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Flash messages... -->
+     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flash-messages">
                 {% for category, message in messages %}
@@ -154,6 +234,7 @@
 
     <form action="/profile/update" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <div class="profile-info">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
@@ -182,9 +263,26 @@
         <div class="button-group">
             <button type="button" onclick="enableEditing()">Edit</button>
             <button type="submit" id="saveBtn" style="display: none;">Save</button>
+            <button type="button" onclick="showChangePasswordModal()">Change Password</button>
         </div>
     </form>
 </main>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" >
+    <div class="modal-content" style="margin-top: 6em; margin-bottom: 6em;">
+        <h2>Change Password</h2>
+        <form action="/profile/change_password" method="POST" onsubmit="return validatePassword()">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="password" required>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirm_password" required>
+            <button type="submit">Save Password</button>
+            <button type="button" class="close-btn" onclick="closeChangePasswordModal()">Cancel</button>
+        </form>
+    </div>
+</div>
 
 <footer class="footer">
     <p>&copy; 2024 Ride Share Company. All rights reserved.</p>
