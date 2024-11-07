@@ -214,9 +214,9 @@ def cancel_ride(ride_id):
 @main.route('/edit_ride/<int:ride_id>',methods=['GET','POST'])
 @login_required
 def edit_ride(ride_id):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        print("yes")
         ride = Ride.query.get_or_404(ride_id)
-
         # Ensure user authorization
         if ride.user_id != current_user.id:
             flash("You are not authorized to edit this ride.", "danger")

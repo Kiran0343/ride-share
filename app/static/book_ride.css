@@ -1,0 +1,590 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #165580; /* Keep your background color */
+    position: fixed; /* Fix the navbar to the top */
+    top: 0; /* Align to the top of the viewport */
+    left: 0; /* Align to the left of the viewport */
+    width: 100%; /* Full width of the viewport */
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 10px 20px; /* Add padding for aesthetics */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Center items vertically */
+}
+
+.nav-left, .nav-right {
+    display: flex; /* Align items within these sections using flexbox */
+    align-items: center; /* Center items vertically within the flex containers */
+    font-size: 3em;
+}
+
+.menu-icon {
+    font-size: 1.5em;
+    display: none; /* Hide the menu icon on larger screens */
+}
+
+.nav-right {
+    gap: 15px; /* Add space between the items in the right section */
+    font-size: 1.5em;
+}
+
+body {
+    padding-top: 60px; /* Add padding to the body to prevent content from being hidden behind the navbar */
+}
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 2.4em; /* Increased font size */
+    padding: 8px 12px;
+    transition: background 0.3s ease;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+
+
+/* Main Content */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.register-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+.form-group {
+    font-size: 1.4em;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus {
+    border-color: #4facfe; /* Highlight border color on focus */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.radio-group label {
+    font-weight: normal;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between; /* Space between buttons */
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: #4facfe; /* Primary button color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    width: 45%; /* Set to a percentage for responsiveness */
+}
+
+.btn:first-child {
+    margin-right: 5%; /* Add space between buttons */
+}
+
+.btn1 {
+    background-color: #4facfe; /* Primary button color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    width: 35%; /* Set to a percentage for responsiveness */
+}
+
+.btn1:first-child {
+    margin-right: 5%; /* Add space between buttons */
+}
+
+
+
+/* Radio Button Font Size */
+.radio-group label {
+    font-size: 24px;
+}
+
+/* Country Code Styling */
+.phone-group {
+    display: flex;
+    align-items: center;
+}
+
+.country-code {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    width: 100px; /* Adjust width as needed */
+}
+
+input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+.user-type-group {
+    display: flex;
+    align-items: center;
+}
+
+.user-type-group label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.user-type-group select {
+    width: 100%; /* Same width as other input fields */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.home-container {
+    color: white;
+    font-size: 20px;
+}
+
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .nav-right {
+        display: none;
+        flex-direction: column; /* Stack items vertically */
+        background-color: #165580; /* Match navbar background */
+        position: absolute; /* Position the menu below the navbar */
+        top: 100%; /* Position it right below the navbar */
+        left: 0; /* Align to the left */
+        width: 100%; /* Full width */
+    }
+
+    .nav-right.active {
+        display: flex; /* Show when toggled */
+    }
+
+    .nav-item {
+        text-align: left; /* Align menu items to the left */
+        padding: 10px 20px; /* Add some padding for better touch targets */
+        color: white; /* Ensure text is visible */
+        width: 100%; /* Full width for each item */
+    }
+
+    .menu-icon {
+        font-size: 3em; /* Increase the font size for a larger hamburger icon */
+        cursor: pointer; /* Change the cursor to pointer for better user experience */
+        color: white; /* Change color to match your navbar or for better visibility */
+        display: flex; /* Use flex to center align the icon if needed */
+        align-items: center; /* Vertically center the icon */
+    }
+
+    main {
+        padding-left: 3em; /* Increased padding for medium screens */
+        padding-right: 3em; /* Increased padding for medium screens */
+    }
+}
+
+
+
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    main {
+        padding-left: 4em; /* Increased padding for medium screens */
+        padding-right: 4em;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 900px) {
+    main {
+        padding-left: 6em; /* Increased padding for medium screens */
+        padding-right: 6em;
+=======
+>>>>>>> 23c7cf5 (working code)
+    }
+}
+
+
+
+/* Medium screens (tablets) */
+@media (min-width: 600px) {
+    main {
+        padding-left: 4em; /* Increased padding for medium screens */
+        padding-right: 4em;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 900px) {
+    main {
+        padding-left: 6em; /* Increased padding for medium screens */
+        padding-right: 6em;
+    }
+}
+
+
+.flash-messages {
+    position: absolute; /* Adjust position as needed */
+    top: 0; /* Position at the top */
+    left: 0;
+    right: 0;
+    background-color: #d4edda; /* Green background for success messages */
+    color: #155724; /* Dark green text */
+    padding: 10px;
+    text-align: center;
+    z-index: 1000; /* Ensure it appears above other content */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center the content */
+}
+
+.flash-messages .danger {
+    background-color: #f8d7da; /* Red background for error messages */
+    color: #721c24; /* Dark red text */
+}
+
+.action-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center;
+    gap: 20px; /* Space between cards */
+    padding: 10px; /* Padding around the action container */
+}
+
+.card {
+    width: 100%; /* Full width on small screens */
+    max-width: 400px; /* Maintain max width */
+    min-width: 300px; /* Set a minimum width to avoid being too thin */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+    margin: 10px; /* Add margin for spacing */
+    border-radius: 8px; /* Rounded corners for aesthetics */
+    padding: 20px; /* Increase padding inside the card */
+    box-sizing: border-box; /* Ensure padding doesn't affect overall width */
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.btn {
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 600px) {
+    .card {
+        width: 90%; /* Adjust width for mobile screens */
+        min-width: 320px; /* Ensure a minimum width on mobile */
+    }
+
+    .action-container {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center the cards */
+    }
+}
+
+
+body {
+    background-color: #292626;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #165580;
+}
+
+.nav-left a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.menu-icon {
+    font-size: 3em;
+    cursor: pointer;
+    color: white;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+main {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+form {
+    background-color: #3A3A3A;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+select {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+}
+
+.btn {
+    background-color: #4facfe; /* Primary button color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    width: 100%; /* Full width for button */
+}
+
+.btn:hover {
+    background-color: #3a9fd2; /* Darker shade on hover */
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 600px) {
+    .card {
+        width: 90%; /* Adjust width for mobile screens */
+        min-width: 320px; /* Ensure a minimum width on mobile */
+    }
+
+    .action-container {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center; /* Center the cards */
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-right {
+        display: none;
+        flex-direction: column; /* Stack items vertically */
+        background-color: #165580; /* Match navbar background */
+        position: absolute; /* Position the menu below the navbar */
+        top: 100%; /* Position it right below the navbar */
+        left: 0; /* Align to the left */
+        width: 100%; /* Full width */
+    }
+
+    .nav-right.active {
+        display: flex; /* Show when toggled */
+    }
+
+    .nav-item {
+        text-align: left; /* Align menu items to the left */
+        padding: 10px 20px; /* Add some padding for better touch targets */
+        color: white; /* Ensure text is visible */
+        width: 100%; /* Full width for each item */
+    }
+
+    .menu-icon {
+        font-size: 5em; /* Increase the font size for a larger hamburger icon */
+        cursor: pointer; /* Change the cursor to pointer for better user experience */
+        color: white; /* Change color to match your navbar or for better visibility */
+        display: flex; /* Use flex to center align the icon if needed */
+        align-items: center; /* Vertically center the icon */
+    }
+
+    main {
+        padding-left: 3em; /* Increased padding for medium screens */
+        padding-right: 3em; /* Increased padding for medium screens */
+    }
+}
+
+
+/* General Styles */
+body {
+    background-color: #292626;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #165580;
+}
+
+.nav-left a {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.menu-icon {
+    font-size: 4em;
+    cursor: pointer;
+    color: white;
+    display: none; /* Show only on mobile */
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 24px;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 28px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-icon {
+        display: block; /* Show hamburger icon on mobile */
+    }
+
+    .nav-right {
+        display: none; /* Hide navigation links initially */
+        flex-direction: column;
+        background-color: #165580;
+        position: absolute;
+        top: 60px; /* Adjusted to appear below the navbar */
+        right: 0;
+        width: 100%;
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    .nav-right.active {
+        display: flex; /* Show navigation when active */
+    }
+
+    .nav-item {
+        font-size: 24px;
+        padding: 10px 0;
+    }
+}
+
+
+.footer {
+            background-color: #165580;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer a {
+            color: #165580;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
