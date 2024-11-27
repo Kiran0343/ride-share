@@ -56,6 +56,9 @@
         <label for="drop_location">Drop Location:</label>
         <input type="text" id="drop_location" name="drop_location" placeholder="Enter drop location" value="{{ ride.drop_location if ride else '' }}" required>
 
+        <label for="price_qouted">Price Quoted:</label>
+        <input type="text" id="price_qouted" name="price_qouted" placeholder="Enter your offer price" value="{{ ride.price_qouted if ride else '' }}" required>
+
         <button type="submit" class="btn">{{ 'Update Ride' if ride else 'Submit' }}</button>
     </form>
 </main>

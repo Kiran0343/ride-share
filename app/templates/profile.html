@@ -123,26 +123,7 @@
             background-color: #124a67;
         }
 
-        .flash-messages {
-            margin-top: 0px;
-            text-align: center;
-            transition: height 0.0s ease; /* Smooth transition for height */
-            overflow: hidden; /* Prevents showing the space when messages are removed */
-        }
-        .alert {
-            padding: 1rem;
-            margin: 0.0rem 0;
-            border-radius: 0px;
-            transition: opacity 0.6s ease; /* Smooth fade out */
-        }
-        .alert-success {
-            background-color: #165548;
-            color: #ffffff;
-        }
-        .alert-error {
-            background-color: #f44336;
-            color: #ffffff;
-        }
+
         /* Modal styling */
         #changePasswordModal {
     display: none; /* Keeps it hidden initially */
@@ -279,7 +260,7 @@
             <input type="password" id="newPassword" name="password" required>
             <label for="confirmPassword">Confirm Password:</label>
             <input type="password" id="confirmPassword" name="confirm_password" required>
-            <button type="submit">Save Password</button>
+            <button type="submit" >Save Password</button>
             <button type="button" class="close-btn" onclick="closeChangePasswordModal()">Cancel</button>
         </form>
     </div>

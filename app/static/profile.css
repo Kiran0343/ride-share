@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #165580; /* Keep your background color */
+    position: fixed; /* Fix the navbar to the top */
+    top: 0; /* Align to the top of the viewport */
+    left: 0; /* Align to the left of the viewport */
+    width: 100%; /* Full width of the viewport */
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 10px 20px; /* Add padding for aesthetics */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Center items vertically */
+}
+
+.nav-left, .nav-right {
+    display: flex; /* Align items within these sections using flexbox */
+    align-items: center; /* Center items vertically within the flex containers */
+    font-size: 3em;
+}
+
+.menu-icon {
+    font-size: 1.5em;
+    display: none; /* Hide the menu icon on larger screens */
+}
+
+.nav-right {
+    gap: 15px; /* Add space between the items in the right section */
+    font-size: 1.5em;
+}
+
+body {
+    padding-top: 60px; /* Add padding to the body to prevent content from being hidden behind the navbar */
+}
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 2.4em; /* Increased font size */
+    padding: 8px 12px;
+    transition: background 0.3s ease;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+
+
+/* Main Content */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+            font-family: Arial, sans-serif;
+            color: #FFFFFF;
+            background-color: #292626;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .profile-container {
+            background-color: #3a3a3a;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+        .profile-container h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0.1rem;
+        }
+        .profile-info label {
+            margin-bottom: 0.1rem;
+            font-weight: bold;
+            font-size:20px;
+        }
+        .profile-info input {
+            padding: 0.3rem;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #555555;
+            color: #ffffff;
+            outline: none;
+            font-size:18px;
+        }
+        .profile-info input[readonly] {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            background-color: #165580;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size:18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-group button:hover {
+            background-color: #124a67;
+        }
+
+        .flash-messages {
+            margin-top: 0px;
+            text-align: center;
+            transition: height 0.0s ease; /* Smooth transition for height */
+            overflow: hidden; /* Prevents showing the space when messages are removed */
+        }
+        .alert {
+            padding: 1rem;
+            margin: 0.0rem 0;
+            border-radius: 0px;
+            transition: opacity 0.6s ease; /* Smooth fade out */
+        }
+        .alert-success {
+            background-color: #165548;
+            color: #ffffff;
+        }
+        .alert-error {
+            background-color: #f44336;
+            color: #ffffff;
+        }
+        /* Modal styling */
+        #changePasswordModal {
+    display: none; /* Keeps it hidden initially */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #3a3a3a;
+    padding: 0.1rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Adds shadow for better visibility */
+    margin: auto; /* Centers it horizontally within its parent */
+}
+
+
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 0.1rem;
+            color: #FFFFFF;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.6rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        .modal-content button {
+            background-color: #165580;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 2px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #124a67;
+        }
+
+        .close-btn {
+            background-color: #f44336;
+            margin-top: 1rem;
+        }

@@ -22,11 +22,13 @@ def create_app():
     # Bind extensions to app
     db.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = 'main.login'
-    login_manager.login_message = "Please log in to access this page."
-    login_manager.login_message_category = "info"
+    login_manager.login_view = 'login'
+    login_manager.refresh_view = 'relogin'
+    login_manager.needs_refresh_message = (u"Session timedout, please re-login")
+    login_manager.needs_refresh_message_category = "info"
 
     from .models import User  # Import after db initialization to avoid circular imports
+
 
     # User loader for Flask-Login
     @login_manager.user_loader

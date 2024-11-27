@@ -296,23 +296,28 @@ input[type="tel"] {
 
 
 .flash-messages {
-    position: absolute; /* Adjust position as needed */
-    top: 0; /* Position at the top */
-    left: 0;
-    right: 0;
-    background-color: #d4edda; /* Green background for success messages */
-    color: #155724; /* Dark green text */
-    padding: 10px;
-    text-align: center;
-    z-index: 1000; /* Ensure it appears above other content */
-    display: flex; /* Use flexbox to center content */
-    justify-content: center; /* Center the content */
-}
+            position: absolute;
+            margin-top: 0px;
+            text-align: center;
+            transition: height 0.0s ease; /* Smooth transition for height */
+            overflow: hidden; /* Prevents showing the space when messages are removed */
+        }
+        .alert {
+            padding: 1rem;
+            margin: 0.0rem 0;
+            border-radius: 0px;
+            transition: opacity 0.6s ease; /* Smooth fade out */
+        }
+        .alert-success {
+            background-color: #165548;
+            color: #ffffff;
+        }
+        .alert-error {
+            background-color: #f44336;
+            color: #ffffff;
+        }
 
-.flash-messages .danger {
-    background-color: #f8d7da; /* Red background for error messages */
-    color: #721c24; /* Dark red text */
-}
+
 
 .action-container {
     display: flex;

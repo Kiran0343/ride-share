@@ -1,6 +1,6 @@
 import os
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://ride_share_1pm4_user:LNDcV4qRiIXE7ins39VL3Ws3iuWZn5WQ@dpg-csdqigt6l47c73dfrmi0-a.oregon-postgres.render.com/ride_share_1pm4?sslmode=require'
+    SECRET_KEY = 'you-will-never-guess'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://Rideshare_owner:5kQqxvP2RWZJ@ep-odd-grass-a5w3dse2.us-east-2.aws.neon.tech/Rideshare?sslmode=require'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

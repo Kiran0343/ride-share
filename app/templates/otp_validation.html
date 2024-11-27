@@ -64,6 +64,26 @@
             color: #fff;
             font-family: Arial, sans-serif;
         }
+        .flash-messages {
+            margin-top: 0px;
+            text-align: center;
+            transition: height 0.0s ease; /* Smooth transition for height */
+            overflow: hidden; /* Prevents showing the space when messages are removed */
+        }
+        .alert {
+            padding: 1rem;
+            margin: 0.0rem 0;
+            border-radius: 0px;
+            transition: opacity 0.6s ease; /* Smooth fade out */
+        }
+        .alert-success {
+            background-color: #165548;
+            color: #ffffff;
+        }
+        .alert-error {
+            background-color: #f44336;
+            color: #ffffff;
+        }
     </style>
     <script>
         function moveToNext(current, nextFieldID) {
@@ -85,16 +105,39 @@
         <div class="nav-left">
             <a href="/" class="nav-item">Ride Share</a>
         </div>
+        {% if current_user.is_authenticated %}
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-right">
+            <a href="/profile" class="nav-item">{{ current_user.username }}</a>
+            <a href="/logout" class="nav-item">Logout</a>
+        </div>
+        {% else %}
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <div class="nav-right">
             <a href="/login" class="nav-item">Login</a>
             <a href="/register" class="nav-item">Register</a>
         </div>
+        {% endif %}
     </nav>
 </header>
 <main class="otp-container" style="margin-top: 6em;margin-bottom: 6em;">
     <h2>Enter OTP</h2>
-    <form action="/verify_otp" method="POST">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% if current_user.is_authenticated %}
+        <form action="/verify_otp_update_profile" method="POST">
+     {% else %}
+        <form action="/verify_otp" method="POST">
+    {% endif %}
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="otp-input-container">
             <input type="text" maxlength="1" class="otp-input" name="otp1" required oninput="moveToNext(this, 'otp2')">
@@ -105,7 +148,11 @@
             <input type="text" maxlength="1" class="otp-input" name="otp6" required onkeydown="moveToPrevious(event, 'otp5')">
         </div>
         <button type="submit" class="submit-button">Verify OTP</button>
-        <a href="/verify_otp" class="resend-link">Didn't receive OTP? Send again</a>
+        {% if current_user.is_authenticated %}
+            <a href="/verify_otp_update_profile" class="resend-link">Didn't receive OTP? Send again</a>
+        {% else %}
+            <a href="/verify_otp" class="resend-link">Didn't receive OTP? Send again</a>
+        {% endif %}
     </form>
 </main>
 <footer class="footer">

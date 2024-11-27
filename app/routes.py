@@ -9,12 +9,14 @@ from passlib.hash import bcrypt
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime, timedelta
 from .models import Ride
-
+import sys
 # Initialize Firebase Admin SDK
 #cred = credentials.Certificate('ride-share.json')  # Replace with your actual path
 #firebase_admin.initialize_app(cred)
 
 main = Blueprint('main', __name__)
+
+
 
 @main.app_errorhandler(404)
 def page_not_found(e):
@@ -82,11 +84,17 @@ def register():
 
 @main.route('/thank_you')
 def thank_you():
-    return "<h1>Thanks for registering!</h1>"
+    if not current_user.is_authenticated:
+        # Redirect to the dashboard or another page if already logged in
+        return redirect(url_for('main.register'))  # Adjust 'main.dashboard' as needed
+    return "<h1>Thanks for registering!, <a href='/login'>login here</a></h1>"
 
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        # Redirect to the dashboard or another page if already logged in
+        return redirect(url_for('main.dashboard'))  # Adjust 'main.dashboard' as needed
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -125,14 +133,21 @@ def login():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(), Ride.time.asc()).first()
-    return render_template('user_home_page.html', next_ride=next_ride)
+    print (current_user)
+    user_type = User.query.filter_by(id=current_user.id).first().user_type
+    print (user_type)
+    if user_type == 'user':
+        next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(), Ride.time.asc()).first()
+        return render_template('user_home_page.html', next_ride=next_ride)
+    if user_type == 'ride_provider':
+        next_ride = Ride.query.filter_by(user_id=current_user.id).order_by(Ride.date.asc(), Ride.time.asc()).first()
+        return render_template('ride_provider_home_page.html', next_ride=next_ride)
+
 
 @main.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.", "info")
     return redirect(url_for('main.login'))
 
 
@@ -263,13 +278,39 @@ def update_profile():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         phone = request.form.get('phone')
+        email = request.form.get('email')
+        # Check if the email was updated
+        if email != current_user.email:
+            # Generate a 6-digit OTP
+            otp = random.randint(100000, 999999)
 
+            # Store OTP, new email, and expiration time in the session
+            session['username'] = username
+            session['first_name'] = first_name
+            session['last_name'] = last_name
+            session['phone'] = phone
+            session['email'] = email
+            session['otp'] = otp
+            session['otp_expiration'] = (datetime.now() + timedelta(minutes=10)).timestamp()
+
+            # Send OTP to the new email address
+            try:
+                send_email(email,otp)
+
+                flash("An OTP has been sent to your new email address. Please enter it to confirm the change.", "info")
+
+                # Redirect to the OTP verification route
+                return redirect(url_for('main.verify_otp_update_profile'))
+            except Exception as e:
+                flash(f"An error occurred while sending the OTP: {str(e)}", "danger")
+                return redirect(url_for('main.profile'))
         try:
             # Update current user's details
             current_user.username = username
             current_user.first_name = first_name
             current_user.last_name = last_name
             current_user.phone = phone
+            current_user.email = email
 
             # Commit changes to the database
             db.session.commit()
@@ -289,14 +330,17 @@ import smtplib
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash("user with email {} not registered".format(email),'success')
+        if user:
+            # Generate a random OTP
+            otp = random.randint(100000, 999999)
+            session['otp'] = otp
+            # Send OTP to the email
+            send_email(email, otp)
 
-        # Generate a random OTP
-        otp = random.randint(100000, 999999)
-
-        # Send OTP to the email
-        send_email(email, otp)
-
-        return redirect(url_for('main.verify_otp'))
+            return redirect(url_for('main.verify_otp'))
 
     return render_template('forgot_password.html')
 
@@ -320,9 +364,6 @@ def send_email(to_email, otp):
 @main.route('/validate_otp', methods=['GET', 'POST'])
 def validate_otp():
     stored_data = session.get('user_data')
-    if not stored_data:
-        flash("Session expired, please register again.")
-        return redirect(url_for('main.register'))
 
     if request.method == 'POST':
         print (request.form)
@@ -363,6 +404,7 @@ def validate_otp():
 
     return render_template('otp_validation_register.html')
 
+
 @main.route('/verify_otp', methods=['GET', 'POST'])
 def verify_otp():
     if request.method == 'POST':
@@ -374,12 +416,12 @@ def verify_otp():
             request.form.get('otp5'),
             request.form.get('otp6')
         ])
-        if entered_otp == str(session.get('otp')):
+        if entered_otp == str(session.get('otp')) and current_user.is_authenticated:
             print("yes")
             # OTP is correct, create a new user
             user_data = session['register_data']
             new_user = User(user_data['username'], user_data['first_name'], user_data['last_name'],
-                            user_data['phone'], user_data['user_type'], user_data['password'])
+                            user_data['phone'], user_data['user_type'], user_data['password'],user_data['email'])
 
             # Add and commit the new user to the database
             db.session.add(new_user)
@@ -389,14 +431,50 @@ def verify_otp():
             session.pop('otp', None)
             session.pop('register_data', None)
 
-            return redirect(url_for('main.thank_you'))  # Use blueprint name
+            return redirect(url_for('main.login'))  # Use blueprint name
+        elif entered_otp == str(session.get('otp')):
+            flash("password send to email",'success')
+            return redirect(url_for('main.login'))
+        else:
+            flash("Invalid OTP! Please try again.",'danger')
+            return redirect(url_for('main.verify_otp'))
+    return render_template('otp_validation.html')  # Render OTP verification page
+
+
+@main.route('/verify_otp_update_profile', methods=['GET', 'POST'])
+@login_required
+def verify_otp_update_profile():
+    if request.method == 'POST':
+        entered_otp = ''.join([
+            request.form.get('otp1'),
+            request.form.get('otp2'),
+            request.form.get('otp3'),
+            request.form.get('otp4'),
+            request.form.get('otp5'),
+            request.form.get('otp6')
+        ])
+        if entered_otp == str(session.get('otp')):
+            # Update current user's details
+            current_user.username = session['username']
+            current_user.first_name = session['first_name']
+            current_user.last_name = session['last_name']
+            current_user.phone = session['phone']
+            current_user.email = session['email']
+
+            # Commit changes to the database
+            db.session.commit()
+
+            flash('Profile updated successfully!', 'success')
+
+            return redirect(url_for('main.profile'))  # Use blueprint name
 
         else:
             flash("Invalid OTP! Please try again.")
-            return redirect(url_for('main.verify_otp'))
-
-    return render_template('otp_validation.html')  # Render OTP verification page
-
+            return redirect(url_for('main.verify_otp_update_profile'))
+    if request.method == 'GET':
+        send_email(session['email'], session['otp'])
+        flash("otp sent to email {}".format(session['email'],'success'))
+        return render_template('otp_validation.html')  # Render OTP verification page
 
 @main.route('/profile/change_password', methods=['POST'])
 @login_required

@@ -11,18 +11,15 @@
             navRight.classList.toggle('active');
         }
 
-        // Function to hide flash messages after a few seconds
-        function hideFlashMessages() {
-            const flashMessage = document.getElementById('flash-message');
-            if (flashMessage) {
-                setTimeout(() => {
-                    flashMessage.style.display = 'none';
-                }, 5000); // Adjust time in milliseconds (5000 ms = 5 seconds)
-            }
+    // Automatically hide flash messages after 3 seconds
+    setTimeout(() => {
+        const flashMessages = document.querySelector('.flash-messages');
+        if (flashMessages) {
+            flashMessages.style.opacity = '0';
+            // Remove flash messages from the DOM after fade-out animation
+            setTimeout(() => flashMessages.remove(), 600); // Allow time for fade-out
         }
-
-        // Call the hideFlashMessages function when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', hideFlashMessages);
+    }, 3000); // Adjust time as needed (3000ms = 3 seconds)
     </script>
 </head>
 <body style="background-color: #292626;">
@@ -39,14 +36,16 @@
 
         <!-- Flash Message Container -->
         {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <div id="flash-message" class="flash-messages">
-              {% for category, message in messages %}
-                <div class="{{ category }}">{{ message }}</div>
-              {% endfor %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             </div>
-          {% endif %}
-        {% endwith %}
+        {% endif %}
+    {% endwith %}
 
     </nav>
 </header>
@@ -65,7 +64,7 @@
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div class="form-actions">
-                <button type="submit" class="btn1">Login</button>
+                <button type="submit" class="btn1" style="color:#165580">Login</button>
                 <a href="/forgot-password" style="color:#ffffff">Forgot Password?</a>
             </div>
         </form>
